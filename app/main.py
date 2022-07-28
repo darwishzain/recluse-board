@@ -8,6 +8,9 @@ import csv
 ### TODO Fix clashing audio
 ### TODO Timetable with choice to show classes only [not important]
 ### TODO Pomodoro timer -
+global light_color,dark_color
+light_color = "#F0F0F0"
+dark_color = "#000000"
 
 appName = 'Recluse Board'
 appPlatform = sys.platform
@@ -35,7 +38,7 @@ mainFrame = Frame(root, bg='#F0F0F0', height=300, width=500)
 mainFrame.grid(row=0, column=0)
 titleFrame = Frame(mainFrame, bg='#FFF')
 titleFrame.grid(row=0, column=4, columnspan=5)
-clockFrame = Frame(mainFrame, bg="#FFF")
+clockFrame = Frame(mainFrame)
 clockFrame.grid(row=1, column=0)
 tableFrame = Frame(mainFrame)
 tableFrame.grid(row=2, column=0, columnspan=5)
@@ -58,28 +61,26 @@ def dailyPlanner():
                 tdata.append(row)
         for yaxis in range(8):
             for xaxis in range(25):
-                tableBg = "#F0F0F0"
-                tableFg = "#000000"
                 day = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
                 #today = time.strftime("%A") #? return day
                 #now = time.strftime("%H") #? sreturn hour
                 if(yaxis==0):
                     if(xaxis!=0):
-                        #* time of the day
+                        #? time of the day
                         tableText = "{0:0=2d}".format(xaxis-1)+"00"
                     else:
                         tableText = "Day\Time"
                 else:
                     if(xaxis==0):
                         #if(today == day[yaxis-1]):
-                        #    tableBg = "#00FF00"
+                        #    tablebg = "#00FF00"
                         tableText = day[yaxis-1]
                     else:
                         #if(today == day[yaxis-1] and now == "{0:0=2d}".format(xaxis)):
-                        #    tableBg = "#00FF00"
-                        #    tableFg = "#0F0F0F"
+                        #    tablebg = "#00FF00"
+                        #    tablefg = "#0F0F0F"
                         tableText = tdata[yaxis-1][xaxis-1]
-                Label(tableFrame, justify="left", bg=tableBg, fg=tableFg, text=tableText).grid(row=yaxis, column=xaxis, ipady=5, sticky='nesw')
+                Label(tableFrame, justify="left", bg=dark_color, fg=light_color, text=tableText).grid(row=yaxis, column=xaxis, ipady=5, sticky='nesw')
 
 dailyPlanner()
 ######! END TABLE !######
@@ -98,6 +99,8 @@ def initClock():
     timerDisplay.grid(row=0, column=6)
     pomoThirty = Button(clockFrame, text="+30s", command=lambda:countdown(3))#! testing 3.lama sgt nk tunggu 30
     pomoThirty.grid(row=0, column=7)
+    pomoInput = Text(clockFrame, height="1", width="10")
+    pomoInput.grid(row=0, column=9)
     snoozeBtn = Button(clockFrame, text="Snooze", command=lambda:snooze())
     snoozeBtn.grid(row=0, column=8)
     mixer.init()
@@ -115,9 +118,9 @@ def snooze():
     isRing = FALSE
 
 def updateClock():
-    global cH24, cH12, cM, cS #* clock variable [Hour24 Hour12 Minute Second]
-    global dD, dM, dY #* Date variable [Day Month Year]
-    global timer #* timer variable
+    global cH24, cH12, cM, cS #? clock variable [Hour24 Hour12 Minute Second]
+    global dD, dM, dY #? Date variable [Day Month Year]
+    global timer #? timer variable
     global playingState
     pomoSound = mixer
 
