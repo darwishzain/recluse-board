@@ -28,4 +28,5 @@ Example
 Github,https://github.com
 ```
 Result
-![](https://raw.githubusercontent.com/darwishzain/recluse-board/raw/images/linkcsv.png)
+![](images/linkcsv.png)
+![](https://github.com/darwishzain/recluse-board/blob/master/images/linkcsv.png)
