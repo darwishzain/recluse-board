@@ -21,11 +21,11 @@ $ python3 -m pip install -r requirements.txt
 ## Format for link.csv
 Format
 ```
-link,name
+name,link
 ```
 Example
 ```
-https://github.com,Github
+Github,https://github.com
 ```
 Result
 ![](https://raw.githubusercontent.com/darwishzain/recluse-board/raw/images/linkcsv.png)
