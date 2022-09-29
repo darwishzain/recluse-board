@@ -1,4 +1,7 @@
-# recluse-board
+# Recluse Board
+### Interface
+![](images/v0.0.1.png)
+
 [![Recluse Board](https://github-readme-stats.vercel.app/api/pin/?username=darwishzain&repo=recluse-board&theme=radical)](https://github.com/darwishzain/recluse-board)
 
 ![](https://img.shields.io/badge/Code-Python3.9.x-informational?style=flat&logo=python&logoColor=white&color=2bbc8a)
@@ -31,3 +34,18 @@ Facebook,https://facebook.com
 ```
 Result
 ![](images/linkcsv.png)
+
+## Syntax for week.csv
+Syntax
+```
+activity,activity,activity,activity,activity
+```
+Example
+```
+Sleep,Study,Exercise,Reading,Cooking
+```
+Result
+![](images/weekcsv.png)
+
+
+[![Stargazers repo roster for @darwishzain/recluse-board](https://reporoster.com/stars/dark/darwishzain/recluse-board)](https://github.com/darwishzain/recluse-board/stargazers)

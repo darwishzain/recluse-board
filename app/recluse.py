@@ -80,7 +80,7 @@ for i in range(0,len(link)):
 ######! START TABLE !######
 showTable = True
 def table():
-    tabledata = opencsv('csv/daily.csv')
+    tabledata = opencsv('csv/week.csv')
     for yaxis in range(8):
         for xaxis in range(25):
             day = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
@@ -206,7 +206,6 @@ def filenotload():
 ######! END MUSIC PLAYER !######
 Button(showFrame, text='Show\nTable', command=lambda:table()).grid(row=0, column=0)
 Button(showFrame, text='Hide\nTable', command=lambda:tableFrame.grid_remove()).grid(row=0, column=1)
-
 audioPlayer()
 initClock()
 
