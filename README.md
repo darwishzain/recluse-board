@@ -18,15 +18,16 @@ $ cd recluse-board
 $ python3 -m pip install -r requirements.txt
 ```
 
-## Format for link.csv
-Format
+## Syntax for link.csv
+Syntax
 ```
+name,link
 name,link
 ```
 Example
 ```
 Github,https://github.com
+Facebook,https://facebook.com
 ```
 Result
 ![](images/linkcsv.png)
-![](https://github.com/darwishzain/recluse-board/blob/master/images/linkcsv.png)
