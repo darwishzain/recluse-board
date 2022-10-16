@@ -6,7 +6,7 @@ import os,sys
 from pygame import mixer
 import time
 import csv
-from wifi import Cell, Scheme
+#from wifi import Cell, Scheme
 
 """ import subprocess
 networks = subprocess.check_output(['netsh', 'wlan', 'show', 'network'])
@@ -29,20 +29,21 @@ appOs = os.name
 appDev = 'Darwish Zain'
 appVer = '0.0.1 - reborn'
 
+#? run terminal command
 def command(cmd):
     os.system(str(cmd))
-
+#? open link in browser
 def openlink(link):
     if os.name == 'posix':
         link='xdg-open '+link
     elif os.name == 'nt':
         link = 'explorer '+link
     os.system(str(link))
-
-def opencsv(thefile):
+#? read csv file
+def readcsv(filename):
     filedata = []
-    if thefile:
-        with open(thefile,'r') as o:
+    if filename:
+        with open(filename,'r') as o:
             reader = csv.reader(o)
             for row in reader:
                 filedata.append(row)
@@ -55,6 +56,8 @@ root.title(appName+" v"+appVer+" on "+appPlatform)
 #root.state('zoomed')
 
 #? frame where everything is in
+#oneFrame = Frame(root).pack()
+#Button(oneFrame, text="what").pack()
 mainFrame = Frame(root, bg=whitesmoke, height=300, width=500)
 mainFrame.grid(row=0, column=0)
 
@@ -65,22 +68,27 @@ clockFrame.grid(row=1, column=0,columnspan=5)
 linkFrame = Frame(mainFrame)
 linkFrame.grid(row=2, column=0, columnspan=5)
 tableFrame = Frame(mainFrame)
-tableFrame.grid(row=3, column=0)#:] 0,1,2,3,4
+tableFrame.grid(row=4, column=0)#:] 0,1,2,3,4
 audioFrame = Frame(mainFrame, width="500", height="20")
 audioFrame.grid(row=1, column=5, rowspan=2)
 
-link = opencsv('csv/link.csv')
+link = readcsv('csv/link.csv')
+def addButton(l,r,frame):
+    c = l%5
+    if c==0: r += 1
+    Button(frame,text=link[l][0], command=lambda:openlink(link[l][1]),bg="#FFFFFF", relief="flat").grid(row=r, column=c,padx=3,pady=3)
+    return r
 
-def linkButton(l):
-    Button(linkFrame,text=link[l][0], command=lambda:openlink(link[l][1])).grid(row=0, column=l)
+def addLink(r,file,frame):
+    for i in range(0,len(file)):
+        r=addButton(i,r,frame)
 
-for i in range(0,len(link)):
-    linkButton(i)
+addLink(0,link,linkFrame)
 
 ######! START TABLE !######
 showTable = True
 def table():
-    tabledata = opencsv('csv/week.csv')
+    tabledata = readcsv('csv/week.csv')
     for yaxis in range(8):
         for xaxis in range(25):
             day = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
@@ -94,7 +102,7 @@ def table():
                     tableText = day[yaxis-1]
                 else:
                     tableText = tabledata[yaxis-1][xaxis-1]
-            Label(tableFrame, justify="left", text=tableText).grid(row=yaxis, column=xaxis, ipady=5, sticky='nesw')
+            Label(tableFrame, justify="center", text=tableText, wraplength=50).grid(row=yaxis, column=xaxis, ipady=5, sticky='nesw')
 ######! END TABLE !######
 ######! START CLOCK !######
 def initClock():
@@ -214,44 +222,6 @@ def refresh():
 refresh()
 
 
-root.iconbitmap('./icon.ico')
-root.eval('tk::PlaceWindow . center')#? Application positioned at center of screen
+root.iconbitmap('icon.ico')
+#root.eval('tk::PlaceWindow . center')#? Application positioned at center of screen
 root.mainloop()
-# global timer #? timer variable
-# global playingState
-# pomoSound = mixer
-# if timer>0:
-#     timer-=1
-#     timerDisplay.config(text=timer)
-# elif isRing:
-#     pomoSound.init()
-#     sound = "./alarm.mp3"
-#     pomoSound.Channel(0).play(sound,loops=-1)
-# #elif isRing==FALSE:
-# #    pomoSound.music.pause()#! issue: music player also paused
-
-# global timer, isRing
-# timer=0
-
-# pomoInput = Text(clockFrame, height="1", width="10")
-# pomoInput.grid(row=0, column=9)
-# snoozeBtn = Button(clockFrame, text="Snooze", command=lambda:snooze())
-# snoozeBtn.grid(row=0, column=8)
-# mixer.init()
-# isRing = FALSE
-
-# def countdown(t):
-#     global timer,isRing
-#     isRing = TRUE
-#     timer = timer + t
-
-# def snooze():
-#     global isRing
-#     isRing = FALSE
-# timerDisplay = Label(clockFrame, font=('Arial',20), text=0)
-# timerDisplay.grid(row=0, column=6)
-
-#:] Music Player
-#:] Daily Time Table
-#:] Pomodoro
-#:] Clock/Date
