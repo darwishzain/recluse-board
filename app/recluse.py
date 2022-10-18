@@ -1,11 +1,14 @@
-#import tkinter as tk #! linux : Tkinter #! win10 : tkinter
-from ast import For
-from tkinter import *
-from tkinter import filedialog
 import os,sys
 from pygame import mixer
 import time
 import csv
+#! linux : Tkinter #! win10 : tkinter
+if os.name == 'posix':
+    from Tkinter import *
+    from Tkinter import filedialog
+elif os.name == 'nt':
+    from tkinter import *
+    from tkinter import filedialog
 #from wifi import Cell, Scheme
 
 """ import subprocess
@@ -67,8 +70,6 @@ clockFrame = Frame(mainFrame)
 clockFrame.grid(row=1, column=0,columnspan=5)
 linkFrame = Frame(mainFrame)
 linkFrame.grid(row=2, column=0, columnspan=5)
-tableFrame = Frame(mainFrame)
-tableFrame.grid(row=4, column=0)#:] 0,1,2,3,4
 audioFrame = Frame(mainFrame, width="500", height="20")
 audioFrame.grid(row=1, column=5, rowspan=2)
 
@@ -88,6 +89,9 @@ addLink(0,link,linkFrame)
 ######! START TABLE !######
 showTable = True
 def table():
+    table=Tk()
+    tableFrame = Frame(table)
+    tableFrame.grid(row=0, column=0)
     tabledata = readcsv('csv/week.csv')
     for yaxis in range(8):
         for xaxis in range(25):
@@ -96,13 +100,18 @@ def table():
                 if(xaxis==0):
                     tableText = "Day\Time"#column0
                 else:
-                    tableText = "{0:0=2d}".format(xaxis-1)+"00"
+                    tableText = "{0:0=2d}".format(xaxis%24)+"00"
             else:
                 if(xaxis==0):
                     tableText = day[yaxis-1]
                 else:
                     tableText = tabledata[yaxis-1][xaxis-1]
-            Label(tableFrame, justify="center", text=tableText, wraplength=50).grid(row=yaxis, column=xaxis, ipady=5, sticky='nesw')
+            if xaxis%2==0:
+                bg = "#F0F0F0"
+            else:
+                bg = "#FFFFFF"
+            Label(tableFrame, justify="center", text=tableText, bg=bg,wraplength=80).grid(row=yaxis, column=xaxis, ipady=5, sticky='nesw')
+    table.mainloop()
 ######! END TABLE !######
 ######! START CLOCK !######
 def initClock():
@@ -212,14 +221,13 @@ def filenotload():
     audioLabel.config(text="File Not Loaded")
 
 ######! END MUSIC PLAYER !######
-Button(showFrame, text='Show\nTable', command=lambda:table()).grid(row=0, column=0)
-Button(showFrame, text='Hide\nTable', command=lambda:tableFrame.grid_remove()).grid(row=0, column=1)
+Button(showFrame, text='Table', command=lambda:table()).grid(row=0, column=0)
 audioPlayer()
 initClock()
 
 def refresh():
     root.after(1000,refresh)
-refresh()
+#refresh()
 
 
 root.iconbitmap('icon.ico')
