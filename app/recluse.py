@@ -2,6 +2,8 @@ import os,sys
 from pygame import mixer
 import time
 import csv
+import webbrowser
+
 #! linux : Tkinter #! win10 : tkinter
 if os.name == 'posix':
     from Tkinter import *
@@ -38,7 +40,7 @@ def command(cmd):
 #? open link in browser
 def openlink(link):
     if os.name == 'posix':
-        link='xdg-open '+link
+        link ='xdg-open '+link
     elif os.name == 'nt':
         link = 'explorer '+link
     os.system(str(link))
@@ -51,7 +53,17 @@ def readcsv(filename):
             for row in reader:
                 filedata.append(row)
             return filedata
-
+#? open directory
+def explorer(dir):
+    if os.name == 'posix':
+        dir='xdg-open '+dir
+    elif os.name == 'nt':
+        dir = 'explorer '+dir
+    os.system(str(link))
+#? open editor
+#TODO Test in unix
+def editor(dir):
+    webbrowser.open(os.getcwd() + dir)
 root = Tk()
 root.title(appName+" v"+appVer+" on "+appPlatform)
 #root.geometry("1350x400")
@@ -84,7 +96,9 @@ def addLink(r,file,frame):
     for i in range(0,len(file)):
         r=addButton(i,r,frame)
 
-addLink(0,link,linkFrame)
+
+Button(linkFrame, text="Edit Links", command=lambda:editor('/csv/link.csv'),bg="#F0F0F0", relief="flat").grid(row=0, column=4,padx=3,pady=3)
+addLink(1,link,linkFrame)
 
 ######! START TABLE !######
 showTable = True
