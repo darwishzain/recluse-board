@@ -61,7 +61,7 @@ def explorer(dir):
         dir = 'explorer '+dir
     os.system(str(link))
 #? open editor
-#TODO Test in unix
+#TODO Test in unixss
 def editor(dir):
     webbrowser.open(os.getcwd() + dir)
 root = Tk()
