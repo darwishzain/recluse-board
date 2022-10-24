@@ -6,8 +6,8 @@ import webbrowser
 
 #! linux : Tkinter #! win10 : tkinter
 if os.name == 'posix':
-    from Tkinter import *
-    from Tkinter import filedialog
+    from tkinter import *
+    from tkinter import filedialog
 elif os.name == 'nt':
     from tkinter import *
     from tkinter import filedialog
@@ -61,7 +61,6 @@ def explorer(dir):
         dir = 'explorer '+dir
     os.system(str(link))
 #? open editor
-#TODO Test in unixss
 def editor(dir):
     webbrowser.open(os.getcwd() + dir)
 root = Tk()
@@ -89,7 +88,7 @@ link = readcsv('csv/link.csv')
 def addButton(l,r,frame):
     c = l%5
     if c==0: r += 1
-    Button(frame,text=link[l][0], command=lambda:openlink(link[l][1]),bg="#FFFFFF", relief="flat").grid(row=r, column=c,padx=3,pady=3)
+    Button(frame,text=link[l][0], command=lambda:openlink(link[l][1]),bg="#FFFFFF", relief="flat", wraplength=80).grid(row=r, column=c,padx=3,pady=3)
     return r
 
 def addLink(r,file,frame):
@@ -244,6 +243,6 @@ def refresh():
 #refresh()
 
 
-root.iconbitmap('icon.ico')
+#root.iconbitmap('icon.ico')
 #root.eval('tk::PlaceWindow . center')#? Application positioned at center of screen
 root.mainloop()
