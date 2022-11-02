@@ -1,8 +1,10 @@
 import os,sys
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT']="hide"
 from pygame import mixer
 import time
 import csv
 import webbrowser
+
 
 #! linux : Tkinter #! win10 : tkinter
 if os.name == 'posix':
