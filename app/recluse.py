@@ -87,16 +87,24 @@ audioFrame = Frame(mainFrame, width="500", height="20")
 audioFrame.grid(row=1, column=5, rowspan=2)
 
 link = readcsv('csv/link.csv')
-def addButton(l,r,frame):
-    c = l%5
+def addButton(line,r,frame):
+    c = line%5
     if c==0: r += 1
-    Button(frame,text=link[l][0], command=lambda:openlink(link[l][1]),bg="#FFFFFF", relief="flat", wraplength=80).grid(row=r, column=c,padx=3,pady=3)
+    Button(frame,text=link[line][0], command=lambda:openlink(link[line][1]),bg="#FFFFFF", relief="flat", wraplength=80).grid(row=r, column=c,padx=3,pady=3)
     return r
 
-def addLink(r,file,frame):
-    for i in range(0,len(file)):
-        r=addButton(i,r,frame)
 
+def addLink(r,file,frame):
+    line = len(file)
+    n = 0
+    while(len(file)>=n):
+        print(str(n)+file[n][0])
+        r=addButton(n,r,frame)
+        n+=1
+"""     for i in range (0,len(file)):
+        print(str(i)+file[i][0])
+        r=addButton(i,r,frame)
+ """
 
 Button(linkFrame, text="Edit Links", command=lambda:editor('/csv/link.csv'),bg="#F0F0F0", relief="flat").grid(row=0, column=4,padx=3,pady=3)
 addLink(1,link,linkFrame)
