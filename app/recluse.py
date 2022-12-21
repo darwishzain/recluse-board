@@ -97,7 +97,6 @@ def addButton(line,r,frame):
 
 def addLink(r,file,frame):
     line = len(file)
-    print(line)
     n = 0
     while(len(file)>n):
         r = addButton(n,r,frame)
@@ -107,7 +106,8 @@ def addLink(r,file,frame):
         r=addButton(i,r,frame) """
 
 
-Button(linkFrame, text="Edit Links", command=lambda:editor('/csv/link.csv'),bg="#F0F0F0", relief="flat").grid(row=0, column=4,padx=3,pady=3)
+Button(linkFrame, text="Edit Links", command=lambda:editor('/csv/link.csv'),bg="#F0F0F0", relief="flat").grid(row=0, column=3,padx=3,pady=3)
+Button(linkFrame, text="Edit Table", command=lambda:editor('/csv/week.csv'),bg="#F0F0F0", relief="flat").grid(row=0, column=4,padx=3,pady=3)
 addLink(1,link,linkFrame)
 
 ######! START TABLE !######
