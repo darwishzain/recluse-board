@@ -39,13 +39,13 @@ appVer = '0.0.1 - reborn'
 #? run terminal command
 def command(cmd):
     os.system(str(cmd))
-#? open link in browser
-def openlink(link):
+#? open url in browser or file explorer
+def openurl(url):
     if os.name == 'posix':
-        link ='xdg-open '+link
+        url ='xdg-open '+url
     elif os.name == 'nt':
-        link = 'explorer '+link
-    os.system(str(link))
+        url = 'explorer '+url
+    os.system(str(url))
 #? read csv file
 def readcsv(filename):
     filedata = []
@@ -55,13 +55,7 @@ def readcsv(filename):
             for row in reader:
                 filedata.append(row)
             return filedata
-#? open directory
-def explorer(dir):
-    if os.name == 'posix':
-        dir='xdg-open '+dir
-    elif os.name == 'nt':
-        dir = 'explorer '+dir
-    os.system(str(link))
+
 #? open editor
 def editor(dir):
     webbrowser.open(os.getcwd() + dir)
@@ -83,23 +77,23 @@ clockFrame = Frame(mainFrame)
 clockFrame.grid(row=1, column=0,columnspan=5)
 linkFrame = Frame(mainFrame)
 linkFrame.grid(row=2, column=0, columnspan=5)
+shortcutFrame = Frame(mainFrame)
+shortcutFrame.grid(row=3, column=0, columnspan=5)
 audioFrame = Frame(mainFrame, width="500", height="20")
 audioFrame.grid(row=1, column=5, rowspan=2)
 
-link = readcsv('csv/link.csv')
-
-def addButton(line,r,frame):
+def addButton(line,r,frame,file):
     c = line%5
     if c==0: r += 1
-    Button(frame, text=link[line][0], command=lambda:openlink(link[line][1]),bg="#FFFFFF", relief="flat", wraplength=80).grid(row=r, column=c,padx=3,pady=3)
+    Button(frame, text=file[line][0], command=lambda:openurl(file[line][1]),bg="#FFFFFF", relief="flat", wraplength=80).grid(row=r, column=c,padx=3,pady=3)
     return r
 
 
-def addLink(r,file,frame):
+def initButton(r,file,frame):
     line = len(file)
     n = 0
     while(len(file)>n):
-        r = addButton(n,r,frame)
+        r = addButton(n,r,frame,file)
         n+=1
     """ for i in range (0,len(file)):
         print(str(i)+file[i][0])
@@ -108,8 +102,8 @@ def addLink(r,file,frame):
 
 Button(linkFrame, text="Edit Links", command=lambda:editor('/csv/link.csv'),bg="#F0F0F0", relief="flat").grid(row=0, column=3,padx=3,pady=3)
 Button(linkFrame, text="Edit Table", command=lambda:editor('/csv/week.csv'),bg="#F0F0F0", relief="flat").grid(row=0, column=4,padx=3,pady=3)
-addLink(1,link,linkFrame)
-
+initButton(1,readcsv('csv/link.csv'),linkFrame)
+initButton(1,readcsv('csv/shortcut.csv'),shortcutFrame)
 ######! START TABLE !######
 showTable = True
 def table():
