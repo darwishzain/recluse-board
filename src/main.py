@@ -8,8 +8,8 @@ import webbrowser
 
 #! linux : Tkinter #! win10 : tkinter
 if os.name == 'posix':
-    from tkinter import *
-    from tkinter import filedialog
+    from Tkinter import *
+    from Tkinter import filedialog
 elif os.name == 'nt':
     from tkinter import *
     from tkinter import filedialog
@@ -22,6 +22,12 @@ print(decoded_networks) """
 ### todo Fix clashing audio
 ### todo Timetable with choice to show classes only [not important]
 ### todo Pomodoro timer -
+color1="#216afc"
+color2="#397afd"
+color3="#5791fd"
+color4="#97b8fe"
+color5="#b5cdfe"
+color6="#cedefe"
 whitesmoke = "#F0F0F0"
 black = "#000000"
 white = "#FFFFFF"
@@ -59,33 +65,30 @@ def readcsv(filename):
 #? open editor
 def editor(dir):
     webbrowser.open(os.getcwd() + dir)
+
 root = Tk()
-root.title(appName+" v"+appVer+" on "+appPlatform)
-#root.geometry("1350x400")
-#root.attributes('-zoomed', True)
-#root.state('zoomed')
 
 #? frame where everything is in
 #oneFrame = Frame(root).pack()
 #Button(oneFrame, text="what").pack()
-mainFrame = Frame(root, bg=whitesmoke, height=300, width=500)
+mainFrame = Frame(root, bg=color6, height=300, width=500)
 mainFrame.grid(row=0, column=0)
 
-showFrame = Frame(mainFrame)
+showFrame = Frame(mainFrame, bg=color3)
 showFrame.grid(row=0,column=0, columnspan=5)
-clockFrame = Frame(mainFrame)
+clockFrame = Frame(mainFrame, bg=color3)
 clockFrame.grid(row=1, column=0,columnspan=5)
-linkFrame = Frame(mainFrame)
+linkFrame = Frame(mainFrame, bg=color3)
 linkFrame.grid(row=2, column=0, columnspan=5)
-shortcutFrame = Frame(mainFrame)
+shortcutFrame = Frame(mainFrame, bg=color3)
 shortcutFrame.grid(row=3, column=0, columnspan=5)
-audioFrame = Frame(mainFrame, width="500", height="20")
+audioFrame = Frame(mainFrame, bg=color3, width="500", height="1000")
 audioFrame.grid(row=1, column=5, rowspan=2)
 
 def addButton(line,r,frame,file):
     c = line%5
     if c==0: r += 1
-    Button(frame, text=file[line][0], command=lambda:openurl(file[line][1]),bg="#FFFFFF", relief="flat", wraplength=80).grid(row=r, column=c,padx=3,pady=3)
+    Button(frame, text=file[line][0], command=lambda:openurl(file[line][1]),borderwidth=0,bg=color6, fg=color2, relief="flat", wraplength=80).grid(row=r, column=c,padx=3,pady=3)
     return r
 
 
@@ -99,13 +102,11 @@ def initButton(r,file,frame):
         print(str(i)+file[i][0])
         r=addButton(i,r,frame) """
 
-
 Button(linkFrame, text="Edit Links", command=lambda:editor('/csv/link.csv'),bg="#F0F0F0", relief="flat").grid(row=0, column=3,padx=3,pady=3)
 Button(linkFrame, text="Edit Table", command=lambda:editor('/csv/week.csv'),bg="#F0F0F0", relief="flat").grid(row=0, column=4,padx=3,pady=3)
 initButton(1,readcsv('csv/link.csv'),linkFrame)
 initButton(1,readcsv('csv/shortcut.csv'),shortcutFrame)
 ######! START TABLE !######
-showTable = True
 def table():
     table=Tk()
     tableFrame = Frame(table)
@@ -243,11 +244,12 @@ Button(showFrame, text='Table', command=lambda:table()).grid(row=0, column=0)
 audioPlayer()
 initClock()
 
-def refresh():
-    root.after(1000,refresh)
-#refresh()
+print(os.listdir("."))
 
-
-#root.iconbitmap('icon.ico')
-#root.eval('tk::PlaceWindow . center')#? Application positioned at center of screen
+root.title(appName+" v"+appVer+" on "+appPlatform)
+#root.geometry("1350x400")
+#root.attributes('-zoomed', True)
+#root.state('zoomed')
+root.iconbitmap('image/icon.ico')
+root.eval('tk::PlaceWindow . center')#? Application positioned at center of screen
 root.mainloop()
