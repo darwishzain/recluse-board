@@ -22,12 +22,12 @@ print(decoded_networks) """
 ### todo Fix clashing audio
 ### todo Timetable with choice to show classes only [not important]
 ### todo Pomodoro timer -
-color1="#216afc"
-color2="#397afd"
-color3="#5791fd"
-color4="#97b8fe"
-color5="#b5cdfe"
-color6="#cedefe"
+
+color1="#4679c6"
+color2="#2f54aa"
+color3="#020a72"
+color4="#073763"
+
 whitesmoke = "#F0F0F0"
 black = "#000000"
 white = "#FFFFFF"
@@ -71,24 +71,24 @@ root = Tk()
 #? frame where everything is in
 #oneFrame = Frame(root).pack()
 #Button(oneFrame, text="what").pack()
-mainFrame = Frame(root, bg=color6, height=300, width=500)
+mainFrame = Frame(root, bg=color1, height=300, width=500)
 mainFrame.grid(row=0, column=0)
 
-showFrame = Frame(mainFrame, bg=color3)
-showFrame.grid(row=0,column=0, columnspan=5)
-clockFrame = Frame(mainFrame, bg=color3)
+viewFrame = Frame(mainFrame, bg=color1)
+viewFrame.grid(row=0,column=0, columnspan=5)
+clockFrame = Frame(mainFrame, bg=color1)
 clockFrame.grid(row=1, column=0,columnspan=5)
-linkFrame = Frame(mainFrame, bg=color3)
+linkFrame = Frame(mainFrame, bg=color2)
 linkFrame.grid(row=2, column=0, columnspan=5)
-shortcutFrame = Frame(mainFrame, bg=color3)
+shortcutFrame = Frame(mainFrame, bg=color2)
 shortcutFrame.grid(row=3, column=0, columnspan=5)
-audioFrame = Frame(mainFrame, bg=color3, width="500", height="1000")
+audioFrame = Frame(mainFrame, bg=color2, width="500", height="1000")
 audioFrame.grid(row=1, column=5, rowspan=2)
 
 def addButton(line,r,frame,file):
     c = line%5
     if c==0: r += 1
-    Button(frame, text=file[line][0], command=lambda:openurl(file[line][1]),borderwidth=0,bg=color6, fg=color2, relief="flat", wraplength=80).grid(row=r, column=c,padx=3,pady=3)
+    Button(frame, text=file[line][0], command=lambda:openurl(file[line][1]),borderwidth=0,bg=color3, fg=whitesmoke, relief="flat", wraplength=80).grid(row=r, column=c,padx=3,pady=3)
     return r
 
 
@@ -102,8 +102,8 @@ def initButton(r,file,frame):
         print(str(i)+file[i][0])
         r=addButton(i,r,frame) """
 
-Button(linkFrame, text="Edit Links", command=lambda:editor('/csv/link.csv'),bg="#F0F0F0", relief="flat").grid(row=0, column=3,padx=3,pady=3)
-Button(linkFrame, text="Edit Table", command=lambda:editor('/csv/week.csv'),bg="#F0F0F0", relief="flat").grid(row=0, column=4,padx=3,pady=3)
+Button(linkFrame, text="Edit Links", command=lambda:editor('/csv/link.csv'),borderwidth=0,bg="#F0F0F0", relief="flat").grid(row=0, column=3,padx=3,pady=3)
+Button(linkFrame, text="Edit Table", command=lambda:editor('/csv/week.csv'),borderwidth=0,bg="#F0F0F0", relief="flat").grid(row=0, column=4,padx=3,pady=3)
 initButton(1,readcsv('csv/link.csv'),linkFrame)
 initButton(1,readcsv('csv/shortcut.csv'),shortcutFrame)
 ######! START TABLE !######
@@ -126,25 +126,27 @@ def table():
                 else:
                     tableText = tabledata[yaxis-1][xaxis-1]
             if xaxis%2==0:
-                bg = "#F0F0F0"
+                bg = color2
             else:
-                bg = "#FFFFFF"
-            Label(tableFrame, justify="center", text=tableText, bg=bg,wraplength=80).grid(row=yaxis, column=xaxis, ipady=5, sticky='nesw')
+                bg = color1
+            Label(tableFrame, justify="center", text=tableText, bg=bg, fg=whitesmoke, wraplength=80).grid(row=yaxis, column=xaxis, ipady=5, sticky='nesw')
     table.mainloop()
+
+Button(viewFrame, text='Table', borderwidth=0, command=lambda:table()).grid(row=0, column=0)
 ######! END TABLE !######
 ######! START CLOCK !######
 def initClock():
     global clockDisplay, dateDisplay, timer, pomotime
     timer = 0
-    clockDisplay = Label(clockFrame, font=('Arial',20), text="HH:MM::SS")
+    clockDisplay = Label(clockFrame, bg=color1, font=('Arial',20), text="HH:MM::SS")
     clockDisplay.grid(row=0, column=0)
-    dateDisplay = Label(clockFrame, font=('Arial',20),text="DD/MM/YYYY")
-    dateDisplay.grid(row=0, column=1)
+    dateDisplay = Label(clockFrame, bg=color1, font=('Arial',20),text="DD/MM/YYYY")
+    dateDisplay.grid(row=1, column=0)
 
-    pomo10 = Button(clockFrame, text="+10", command=lambda:pomo(10))
-    pomo10.grid(row=0, column=3)
-    pomo30 = Button(clockFrame, text="+30", command=lambda:pomo(30))
-    pomo30.grid(row=0, column=4)
+    pomo10 = Button(clockFrame, text="+10",borderwidth=0, command=lambda:pomo(10))
+    pomo10.grid(row=1, column=2)
+    pomo30 = Button(clockFrame, text="+30",borderwidth=0, command=lambda:pomo(30))
+    pomo30.grid(row=2, column=2)
     pomotime = Label(clockFrame, text=timer)
     pomotime.grid(row=0, column=2)
     update()
@@ -180,28 +182,32 @@ audioFile = ""
 audioList = []
 def audioPlayer():
     global audioLabel,listLabel,listFrame
-    loadBtn = Button(audioFrame, text="Load", command=lambda:load())
-    loadBtn.grid(row=1, column=0, columnspan=5)
-
-    prevBtn = Button(audioFrame, text="<<", state='disabled')
-    prevBtn.grid(row=2, column=0)
-    stopBtn = Button(audioFrame, text="Stop", command=lambda:stop())
-    stopBtn.grid(row=2, column=1)
-    playBtn = Button(audioFrame, text="Play", command=lambda:play(len(audioList)-1))
-    playBtn.grid(row=2, column=2)
-    pauseBtn = Button(audioFrame, text="Pause", command=lambda:pause())
-    pauseBtn.grid(row=2, column=3)
-    nextBtn = Button(audioFrame, text=">>", state='disabled')
-    nextBtn.grid(row=2, column=4)
 
     audioLabel = Label(audioFrame, text="Audio Title",width="10")#, relief='flat'
     audioLabel.grid(row=0, column=0, columnspan=5, sticky='nesw')
-    listFrame = Frame(audioFrame, width=10)
-    listFrame.grid(row=4,column=0, columnspan=5)
-    # listLabel = Label(listFrame, text="Playlist",height=10)
-    # listLabel.grid(row=1, column=0, columnspan=5)
+    abFrame = Frame(audioFrame)
+    abFrame.grid(row=1,column=1)
+    playlistFrame = Frame(audioFrame,width=10)
+    playlistFrame.grid(row=4,column=0,columnspan=5)
 
+    loadBtn = Button(abFrame, text="Load", command=lambda:load())
+    loadBtn.grid(row=1, column=0, columnspan=5)
 
+    prevBtn = Button(abFrame, text="<<", borderwidth=0, state='disabled')
+    prevBtn.grid(row=2, column=0)
+    stopBtn = Button(abFrame, text="Stop", borderwidth=0, command=lambda:stop())
+    stopBtn.grid(row=2, column=1)
+    playBtn = Button(abFrame, text="Play", borderwidth=0, command=lambda:play(len(audioList)-1))
+    playBtn.grid(row=2, column=2)
+    pauseBtn = Button(abFrame, text="Pause", borderwidth=0, command=lambda:pause())
+    pauseBtn.grid(row=2, column=3)
+    nextBtn = Button(abFrame, text=">>", borderwidth=0, state='disabled')
+    nextBtn.grid(row=2, column=4)
+
+    listLabel = Label(playlistFrame, text="Playlist")
+    listLabel.grid(row=1, column=0, columnspan=5)
+    listFrame = Frame(playlistFrame, width=10)
+    listFrame.grid(row=2,column=0, columnspan=5)
 
 def load():
     global audioFile
@@ -240,7 +246,6 @@ def filenotload():
     audioLabel.config(text="File Not Loaded")
 
 ######! END MUSIC PLAYER !######
-Button(showFrame, text='Table', command=lambda:table()).grid(row=0, column=0)
 audioPlayer()
 initClock()
 

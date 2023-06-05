@@ -1,7 +1,7 @@
-,,,,,,,,,,,,,,,,,,Recreation,,Revision,Revision,,
-,,,,,,,,,BCM2053,BCM2053,,,,,,,,Recreation,,Revision,Revision,,
-,,,,,,,,,UHL2423,UHL2423,UHE3082,UHE3082,BCS3233,BCS3233,BCI2313,BCI3213,,Recreation,,Revision,Revision,,
-,,,,,,,BCS3233,BCS3233,BCI2313,BCI3213,,,,,,,,Recreation,,Revision,Revision,,
-,,,,,,,UHS2021,UHS2021,UHL2432,,,,,,,,,Recreation,,Revision,Revision,,
-,,,,,,,,,BCM2053,BCM2053,,,,,,,,Recreation,,Revision,Revision,,
-,,,,,,,,,,,,,,,,,,Recreation,,Revision,Revision,,
+Sleep,Sleep,Sleep,Sleep,Wake Up,Breakfast,,,,,,Lunch,,,,,Recreation,Recreation,,Dinner,Revision,Revision,Sleep,Sleep
+Sleep,Sleep,Sleep,Sleep,Wake Up,Breakfast,Commute,Class,Class,Class,Class,Lunch,Class,Class,Class,Class,Recreation,Recreation,,Dinner,Revision,Revision,Sleep,Sleep
+Sleep,Sleep,Sleep,Sleep,Wake Up,Breakfast,Commute,Class,Class,Class,Class,Lunch,Class,Class,Class,Class,Recreation,Recreation,,Dinner,Revision,Revision,Sleep,Sleep
+Sleep,Sleep,Sleep,Sleep,Wake Up,Breakfast,Commute,Class,Class,Class,Class,Lunch,Class,Class,Class,Class,Recreation,Recreation,,Dinner,Revision,Revision,Sleep,Sleep
+Sleep,Sleep,Sleep,Sleep,Wake Up,Breakfast,Commute,Class,Class,Class,Class,Lunch,Class,Class,Class,Class,Recreation,Recreation,,Dinner,Revision,Revision,Sleep,Sleep
+Sleep,Sleep,Sleep,Sleep,Wake Up,Breakfast,Commute,Class,Class,Class,Class,Lunch,Class,Class,Class,Class,Recreation,Recreation,,Dinner,Revision,Revision,Sleep,Sleep
+Sleep,Sleep,Sleep,Sleep,Wake Up,Breakfast,,,,,,Lunch,,,,,Recreation,Recreation,,Dinner,Revision,Revision,Sleep,Sleep
