@@ -51,6 +51,24 @@ Example
 ```
 Sleep,Study,Exercise,Reading,Cooking
 ```
+
+### Default CSV
+#### link.csv
+```
+Example Google, https://google.com
+Example Youtube,https://studio.youtube.com/
+Example Github,https://github.com
+Example Sci-Hub,https://sci-hub.se/
+Example OneDrive,https://onedrive.live.com/
+"Jeli.my",https://jeli.com.my/index.php?home
+```
+#### shortcut.csv
+```
+Users File,C:\Users
+C,C:\
+CSV,./csv
+VLC,C:\Program Files (x86)\VideoLAN\VLC\vlc.exe
+```
 Result
 ![](images/weekcsv.png)
 
