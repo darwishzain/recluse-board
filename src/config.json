@@ -1,0 +1,13 @@
+{
+    "appname": "Recluse Board",
+    "version": "0.0.2",
+    "name":"baby",
+    "developer":"Darwish Zain",
+    "windowsize": "800x600",
+    "icon_path": "image/icon.ico",
+    "csvfile": {
+        "link": "./csv/link.csv",
+        "shortcut": "./csv/shortcut.csv",
+        "week": "./csv/week.csv"
+    }
+}
