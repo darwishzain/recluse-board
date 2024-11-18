@@ -14,7 +14,7 @@
 # clone the repo
 $ git clone https://github.com/darwishzain/recluse-board.git
 
-# change the working directory to sherlock
+# change the working directory to recluse-board
 $ cd recluse-board
 
 # install the requirements
@@ -27,6 +27,19 @@ $ python3 -m pip install -r requirements.txt
 $ cd src
 $ python -u main.py
 ```
+
+## Development
+### Debian
+#### Install python virtual environment
+```
+sudo apt-get install python3-venv
+```
+#### Activate virtual environment
+```
+source myenv/bin/activate  # On Linux/macOS
+myenv\Scripts\activate  # On Windows
+```
+
 ## Syntax
 
 #### link.csv
