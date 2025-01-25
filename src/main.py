@@ -3,8 +3,7 @@ import tkinter as tk
 from tkinter import Label,Frame,Button,filedialog,Entry,Scale,messagebox
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT']="hide"
 from pygame import mixer
-#from PIL import Image, ImageTk
-
+from PIL import Image, ImageTk
 
 #? linux : Tkinter #? win10 : tkinter
 #if os.name == 'posix':
@@ -30,6 +29,8 @@ colorb = "#000000"
 colorw = "#FFFFFF"
 colorws = "#F0F0F0"
 
+
+
 def absolutepath(relative_path):
         script_dir = os.path.dirname(__file__)
         return os.path.join(script_dir, relative_path)
@@ -53,6 +54,15 @@ class RecluseBoard:
         self.root.attributes('-zoomed', True)
         self.root.eval('tk::PlaceWindow . center')#? Application positioned at center of screen
 
+        self.plusimage = ImageTk.PhotoImage(Image.open("./image/plus.png").resize((15,15)))
+
+        self.musicimage = ImageTk.PhotoImage(Image.open("./image/music.png").resize((15,15)))
+        self.loadimage = ImageTk.PhotoImage(Image.open("./image/load.png").resize((15,15)))
+        self.previmage = ImageTk.PhotoImage(Image.open("./image/previous.png").resize((15,15)))
+        self.playimage = ImageTk.PhotoImage(Image.open("./image/play.png").resize((15,15)))
+        self.pauseimage = ImageTk.PhotoImage(Image.open("./image/pause.png").resize((15,15)))
+        self.stopimage = ImageTk.PhotoImage(Image.open("./image/stop.png").resize((15,15)))
+        self.nextimage = ImageTk.PhotoImage(Image.open("./image/next.png").resize((15,15)))
         #self.root.state('zoomed')
         #self.root.iconbitmap(absolutepath('./image/icon.ico'))
         #print(os.listdir("."))
@@ -134,7 +144,7 @@ class RecluseBoard:
         self.audioframe = Frame(self.root)
         self.audioframe.pack()
 
-        self.audiolabel = Label(self.audioframe, text="Audio Title")
+        self.audiolabel = Label(self.audioframe, image=self.musicimage, text=" Audio Title", compound="left")
         self.audiolabel.grid(row=0, column=0, columnspan=5)
 
         #self.seeker = ttk.Scale(self.audioframe, from_=0, to=100, orient=tk.HORIZONTAL)
@@ -147,19 +157,19 @@ class RecluseBoard:
         #self.channels = self.sound.get_num_channels()  # Number of audio channels (mono or stereo)
         #self.samplerate = self.sound.get_samplerate()  # Sample rate of the audio file
 
-        self.loadbtn = Button(self.audioframe, text="Load", command=self.loadaudio)
+        self.loadbtn = Button(self.audioframe, image=self.loadimage, text="Load", width=40, height=25, compound="left", command=self.loadaudio)
         self.loadbtn.grid(row=2, column=1, columnspan=5)
 
-        self.prevbtn = Button(self.audioframe, text="Prev", command=self.playaudio)
-        self.prevbtn.grid(row=3, column=1)
-        self.playbtn = Button(self.audioframe, text="Play", command=self.playaudio)
-        self.playbtn.grid(row=3, column=2)
-        self.pausebtn = Button(self.audioframe, text="Pause", command=self.pauseaudio)
-        self.pausebtn.grid(row=3, column=3)
-        self.stopbtn = Button(self.audioframe, text="Stop", command=self.stopaudio)
-        self.stopbtn.grid(row=3, column=4)
-        self.nextbtn = Button(self.audioframe, text="Next", command=self.playaudio)
-        self.nextbtn.grid(row=3, column=5)
+        self.prevbtn = Button(self.audioframe, image=self.previmage, text="Prev", width=25, height=25, command=self.playaudio)
+        self.prevbtn.grid(row=3, column=1, padx=5, pady=5)
+        self.playbtn = Button(self.audioframe, image=self.playimage, text="Play", width=25, height=25, command=self.playaudio)
+        self.playbtn.grid(row=3, column=2, padx=5, pady=5)
+        self.pausebtn = Button(self.audioframe, image=self.pauseimage, text="Pause", width=25, height=25, command=self.pauseaudio)
+        self.pausebtn.grid(row=3, column=3, padx=5, pady=5)
+        self.stopbtn = Button(self.audioframe, image=self.stopimage,text="Stop", width=25, height=25, command=self.stopaudio)
+        self.stopbtn.grid(row=3, column=4, padx=5, pady=5)
+        self.nextbtn = Button(self.audioframe, image=self.nextimage, text="Next", width=25, height=25, command=self.playaudio)
+        self.nextbtn.grid(row=3, column=5, padx=5, pady=5)
 
         self.playlistlabel = Label(self.audioframe, wraplength=500)
         self.playlistlabel.grid(row=4,column=0, columnspan=5)
@@ -168,7 +178,7 @@ class RecluseBoard:
     def loadaudio(self):
         self.audiofile = filedialog.askopenfilename()
         if self.audiofile:
-            self.audiolabel.config(text=os.path.basename(self.audiofile))
+            self.audiolabel.config(text=" " + os.path.basename(self.audiofile))
             self.audiolist.append(self.audiofile)
 
     def playaudio(self):
@@ -228,9 +238,9 @@ class RecluseBoard:
         self.pomodoroframe.pack()
         self.pomodorolabel = Label(self.pomodoroframe, text="00:00",font=("Arial", 18))
         self.pomodorolabel.grid(row=0,column=0)
-        self.pomodoro30 = Button(self.pomodoroframe, text="+30", command=lambda:self.setpomo(30))
+        self.pomodoro30 = Button(self.pomodoroframe, image=self.plusimage, text="+30", compound="left", command=lambda:self.setpomo(30))
         self.pomodoro30.grid(row=0, column=1)
-        self.pomodoro60 = Button(self.pomodoroframe, text="+60", command=lambda:self.setpomo(60))
+        self.pomodoro60 = Button(self.pomodoroframe, image=self.plusimage, text="+60", compound="left", command=lambda:self.setpomo(60))
         self.pomodoro60.grid(row=0, column=2)
         #self.pomoinput = Entry(self.pomodoroframe, textvariable=30, width=3)
         #self.pomoinput.grid(row=0, column=3)
@@ -307,27 +317,6 @@ if __name__ == "__main__":
 #    table.mainloop()
 #
 #######? END TABLE !######
-
-#! icon with pillow
-#        iconpath = self.geticonpath('./image/icon.png')
-#        self.seticon(iconpath)
-#
-#    def geticonpath(self, filename):
-#        """ Returns the absolute path to the icon file. """
-#        if getattr(sys, 'frozen', False):
-#            # If running in a frozen state (e.g., PyInstaller), use the bundled path
-#            return os.path.join(sys._MEIPASS, filename)
-#        else:
-#            # Running in a development environment
-#            return os.path.join(os.path.dirname(__file__), filename)
-#
-#    def seticon(self, iconpath):
-#        """ Sets the window icon using Pillow. """
-#        try:
-#            icon = Image.open(iconpath)
-#            self.root.iconphoto(True, ImageTk.PhotoImage(icon))
-#        except Exception as e:
-#            print(f"Error setting icon: {e}")
 
 #! Luno price tracker
 #        self.getlunoprice()

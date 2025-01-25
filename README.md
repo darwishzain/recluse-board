@@ -36,8 +36,13 @@ sudo apt-get install python3-venv
 ```
 #### Activate virtual environment
 ```
-source myenv/bin/activate  # On Linux/macOS
-myenv\Scripts\activate  # On Windows
+# On Linux/macOS
+cd src
+. dev-env/bin/activate 
+
+# On Windows
+cd src
+myenv\Scripts\activate  
 ```
 
 ## Syntax
