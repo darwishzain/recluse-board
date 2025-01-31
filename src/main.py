@@ -29,23 +29,20 @@ colorb = "#000000"
 colorw = "#FFFFFF"
 colorws = "#F0F0F0"
 
+def fullpath(relative_path):
+    directory = os.path.dirname(__file__)
+    return os.path.join(directory, relative_path)
 
-
-def absolutepath(relative_path):
-        script_dir = os.path.dirname(__file__)
-        return os.path.join(script_dir, relative_path)
-
-def loadconfig(filename=absolutepath('./config.json')):
-    with open(filename, 'r') as file:
-        return json.load(file)
-config = loadconfig()
+with open(fullpath("./config.json")) as conf:
+    config = json.load(conf)
 
 def editor(dir):
     #webbrowser.open(os.getcwd() + dir)
-    webbrowser.open(absolutepath(dir))
+    webbrowser.open(fullpath(dir))
 
 def command(command):
     os.system(str(command))
+
 class RecluseBoard:
     def __init__(self, root):
         self.root = root
@@ -54,17 +51,17 @@ class RecluseBoard:
         self.root.attributes('-zoomed', True)
         self.root.eval('tk::PlaceWindow . center')#? Application positioned at center of screen
 
-        self.plusimage = ImageTk.PhotoImage(Image.open("./image/plus.png").resize((15,15)))
+        self.plusimage = ImageTk.PhotoImage(Image.open(fullpath("./image/plus.png")).resize((15,15)))
 
-        self.musicimage = ImageTk.PhotoImage(Image.open("./image/music.png").resize((15,15)))
-        self.loadimage = ImageTk.PhotoImage(Image.open("./image/load.png").resize((15,15)))
-        self.previmage = ImageTk.PhotoImage(Image.open("./image/previous.png").resize((15,15)))
-        self.playimage = ImageTk.PhotoImage(Image.open("./image/play.png").resize((15,15)))
-        self.pauseimage = ImageTk.PhotoImage(Image.open("./image/pause.png").resize((15,15)))
-        self.stopimage = ImageTk.PhotoImage(Image.open("./image/stop.png").resize((15,15)))
-        self.nextimage = ImageTk.PhotoImage(Image.open("./image/next.png").resize((15,15)))
+        self.musicimage = ImageTk.PhotoImage(Image.open(fullpath("./image/music.png")).resize((15,15)))
+        self.loadimage = ImageTk.PhotoImage(Image.open(fullpath("./image/load.png")).resize((15,15)))
+        self.previmage = ImageTk.PhotoImage(Image.open(fullpath("./image/previous.png")).resize((15,15)))
+        self.playimage = ImageTk.PhotoImage(Image.open(fullpath("./image/play.png")).resize((15,15)))
+        self.pauseimage = ImageTk.PhotoImage(Image.open(fullpath("./image/pause.png")).resize((15,15)))
+        self.stopimage = ImageTk.PhotoImage(Image.open(fullpath("./image/stop.png")).resize((15,15)))
+        self.nextimage = ImageTk.PhotoImage(Image.open(fullpath("./image/next.png")).resize((15,15)))
         #self.root.state('zoomed')
-        #self.root.iconbitmap(absolutepath('./image/icon.ico'))
+        #self.root.iconbitmap(fullpath("./image/icon.ico"))
         #print(os.listdir("."))
 
         self.audiolist = []
@@ -76,24 +73,24 @@ class RecluseBoard:
 
 
     def openfile(self):
-        self.file_path = filedialog.askopenfilename()
-        if self.file_path:
-            self.welcomelabel.config(text="Selected file: " + os.path.basename(self.file_path))
+        self.filepath = filedialog.askopenfilename()
+        if self.filepath:
+            self.welcomelabel.config(text="Selected file: " + os.path.basename(self.filepath))
 
     def initui(self):
-        self.baseframe = Frame(self.root)
-        self.baseframe.pack()
+        self.baseframe = Frame(self.root, bg=config['color']['background'])
+        self.baseframe.pack(fill='both',expand=True)
 
         self.toolbar = Frame(self.baseframe)
         self.toolbar.pack(anchor="w")
-        self.editlink = Button(self.toolbar, text="Links", command=lambda:editor(config['csvfile']['link'])).grid(row=0, column=0)
-        self.editshortcut = Button(self.toolbar, text="Shortcuts", command=lambda:editor(config['csvfile']['shortcut'])).grid(row=0, column=1)
-        self.editschedule = Button(self.toolbar, text="Schedule", command=lambda:editor(config['csvfile']['week'])).grid(row=0, column=2)
+        self.editlink = Button(self.toolbar, text="Links", bg=config['color']['btn']['lt']['bg'], fg=config['color']['btn']['lt']['fg'], command=lambda:editor(config['csvfile']['link'])).grid(row=0, column=0)
+        self.editshortcut = Button(self.toolbar, text="Shortcuts", bg=config['color']['btn']['lt']['bg'], fg=config['color']['btn']['lt']['fg'], command=lambda:editor(config['csvfile']['shortcut'])).grid(row=0, column=1)
+        self.editschedule = Button(self.toolbar, text="Schedule", bg=config['color']['btn']['lt']['bg'], fg=config['color']['btn']['lt']['fg'],command=lambda:editor(config['csvfile']['week'])).grid(row=0, column=2)
         #Button(viewFrame, text='Schedule', borderwidth=0, command=lambda:table()).grid(row=0, column=0)
 
         # Add other UI elements here
-        self.welcomelabel = Label(self.baseframe, text="Welcome to "+config['appname'], font=("Arial", 18))
-        self.welcomelabel.pack(pady=20)
+        self.welcomelabel = Label(self.baseframe, text=config['welcomemessage'], bg=config['color']['background'], font=("Arial", 18))
+        self.welcomelabel.pack()
 
         self.buttonframe = Frame(self.baseframe)
         self.buttonframe.pack()
@@ -101,16 +98,15 @@ class RecluseBoard:
         #self.button1.pack()
         self.linkframe = Frame(self.buttonframe)
         self.linkframe.grid(row=0,column=0)
-        self.initbutton('./csv/link.csv',self.linkframe)
+        self.initbutton(fullpath('./csv/link.csv'),self.linkframe)
         self.shortcutframe = Frame(self.buttonframe)
         self.shortcutframe.grid(row=1,column=0)
-        self.initbutton('./csv/shortcut.csv',self.shortcutframe)
+        self.initbutton(fullpath('./csv/shortcut.csv'),self.shortcutframe)
 
     def readcsv(self,filename):
         filedata = []
         if filename:
-            absolutefilepath = absolutepath(filename)
-            with open(absolutefilepath,'r') as o:
+            with open(filename,'r') as o:
                 reader = csv.reader(o)
                 for row in reader:
                     filedata.append(row)
@@ -130,7 +126,7 @@ class RecluseBoard:
         return currentrow
 
     def initbutton(self,dir,parent):
-        csvfile = self.readcsv(absolutepath(dir))
+        csvfile = self.readcsv(fullpath(dir))
         #line = len(csvfile)
         row = 0
         csvline = 0

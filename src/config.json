@@ -1,13 +1,32 @@
 {
     "appname": "Recluse Board",
-    "version": "0.0.2",
-    "name":"baby",
+    "version": "0.0.3",
+    "name":"langkah",
     "developer":"Darwish Zain",
+    "website":"https://jeli.com.my",
+    "github":"https://github.com/darwishzain/",
     "windowsize": "800x600",
     "icon_path": "image/icon.ico",
+    "welcomemessage":"Welcome to Recluse Board",
     "csvfile": {
         "link": "./csv/link.csv",
         "shortcut": "./csv/shortcut.csv",
         "week": "./csv/week.csv"
+    },
+    "color":{
+        "background":"#ADD8E6",
+        "btn":{
+            "lt":{
+                "bg":"#4CAF50",
+                "fg":"#FFFFFF"
+            }
+        },
+        "1" : "#FFB6C1",
+        "2" : "#800080",
+        "3" : "#ADD8E6",
+        "4" : "#073763",
+        "dark" : "#000000",
+        "light" : "#FFFFFF",
+        "disable" : "#F0F0F0"
     }
 }
