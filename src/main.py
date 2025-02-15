@@ -33,8 +33,11 @@ def fullpath(relative_path):
     directory = os.path.dirname(__file__)
     return os.path.join(directory, relative_path)
 
-with open(fullpath("./config.json")) as conf:
-    config = json.load(conf)
+def openjson(filename):
+    file = fullpath(filename)
+    with open(file) as f:
+        jsondata = json.load(f)
+    return(jsondata)
 
 def editor(dir):
     #webbrowser.open(os.getcwd() + dir)
@@ -43,9 +46,11 @@ def editor(dir):
 def command(command):
     os.system(str(command))
 
+config = openjson("./config.json")
 class RecluseBoard:
     def __init__(self, root):
         self.root = root
+        self.root.configure(bg=config['background'])
         self.root.title(f"{config['appname']} v{config['version']}-{config['name']} on {sys.platform}")
         self.root.geometry(config['windowsize'])
         self.root.attributes('-zoomed', True)
@@ -77,31 +82,41 @@ class RecluseBoard:
         if self.filepath:
             self.welcomelabel.config(text="Selected file: " + os.path.basename(self.filepath))
 
-    def initui(self):
-        self.baseframe = Frame(self.root, bg=config['color']['background'])
-        self.baseframe.pack(fill='both',expand=True)
+    def openurl(self,url):
+        if os.name == 'posix':
+            url ='xdg-open '+url
+        elif os.name == 'nt':
+            url = 'explorer '+url
+        os.system(str(url))
 
-        self.toolbar = Frame(self.baseframe)
-        self.toolbar.pack(anchor="w")
-        self.editlink = Button(self.toolbar, text="Links", bg=config['color']['btn']['lt']['bg'], fg=config['color']['btn']['lt']['fg'], command=lambda:editor(config['csvfile']['link'])).grid(row=0, column=0)
-        self.editshortcut = Button(self.toolbar, text="Shortcuts", bg=config['color']['btn']['lt']['bg'], fg=config['color']['btn']['lt']['fg'], command=lambda:editor(config['csvfile']['shortcut'])).grid(row=0, column=1)
-        self.editschedule = Button(self.toolbar, text="Schedule", bg=config['color']['btn']['lt']['bg'], fg=config['color']['btn']['lt']['fg'],command=lambda:editor(config['csvfile']['week'])).grid(row=0, column=2)
+    def initui(self):
+        self.baseframe = Frame(self.root, bg=config['background'])
+        self.baseframe.pack(fill='both',expand=True,side="left")
+
         #Button(viewFrame, text='Schedule', borderwidth=0, command=lambda:table()).grid(row=0, column=0)
 
         # Add other UI elements here
-        self.welcomelabel = Label(self.baseframe, text=config['welcomemessage'], bg=config['color']['background'], font=("Arial", 18))
+        self.welcomelabel = Label(self.baseframe, text=config['welcomemessage'], bg=config['background'], font=("Arial", 18))
         self.welcomelabel.pack()
 
         self.buttonframe = Frame(self.baseframe)
         self.buttonframe.pack()
-        #self.button1 = Button(self.baseframe, text="Open File", command=self.openfile)
-        #self.button1.pack()
-        self.linkframe = Frame(self.buttonframe)
-        self.linkframe.grid(row=0,column=0)
-        self.initbutton(fullpath('./csv/link.csv'),self.linkframe)
-        self.shortcutframe = Frame(self.buttonframe)
-        self.shortcutframe.grid(row=1,column=0)
-        self.initbutton(fullpath('./csv/shortcut.csv'),self.shortcutframe)
+        counter = 0
+        edit = Button(self.buttonframe, text="Edit",bg=config['btn-disable']['bg'],fg=config['btn-disable']['fg'], width=15, height=2,command=lambda:editor(fullpath("./data.json")))
+        edit.grid(row=counter//5, column=counter%5)
+        counter+=1
+        for text, url in openjson("./data.json")['link'].items():
+            row = counter//5
+            column = counter%5
+            link = Button(self.buttonframe, text=text,bg=config['btn-dark']['bg'],fg=config['btn-dark']['fg'], width=15, height=2, command=lambda url=url: self.openurl(url))
+            link.grid(row=row, column=column)
+            counter+=1
+        for text, url in openjson("./data.json")['shortcut'].items():
+            row = counter//5
+            column = counter%5
+            shortcut = Button(self.buttonframe, text=text,bg=config['btn-light']['bg'],fg=config['btn-light']['fg'], width=15, height=2, command=lambda url=url: self.openurl(url))
+            shortcut.grid(row=row, column=column)
+            counter+=1
 
     def readcsv(self,filename):
         filedata = []
@@ -112,35 +127,13 @@ class RecluseBoard:
                     filedata.append(row)
                 return filedata
 
-    def openurl(self,url):
-        if os.name == 'posix':
-            url ='xdg-open '+url
-        elif os.name == 'nt':
-            url = 'explorer '+url
-        os.system(str(url))
-
-    def addbutton(self,csvline,currentrow,parent,file,maxcolumn):
-        currentcolumn = csvline%maxcolumn
-        if(currentcolumn==0): currentrow+=1
-        Button(parent, text=file[csvline][0], command=lambda:self.openurl(file[csvline][1])).grid(row=currentrow, column=currentcolumn,padx=3,pady=3)
-        return currentrow
-
-    def initbutton(self,dir,parent):
-        csvfile = self.readcsv(fullpath(dir))
-        #line = len(csvfile)
-        row = 0
-        csvline = 0
-        while(len(csvfile)>csvline):
-            row = self.addbutton(csvline,row,parent,csvfile,5)
-            csvline+=1
-
 #? START audioplayer
     #TODO FIX prevbtn,nextbtn
     def initaudioplayer(self):
-        self.audioframe = Frame(self.root)
+        self.audioframe = Frame(self.root,bg=config['background'])
         self.audioframe.pack()
 
-        self.audiolabel = Label(self.audioframe, image=self.musicimage, text=" Audio Title", compound="left")
+        self.audiolabel = Label(self.audioframe, image=self.musicimage, text=" Audio Title", bg=config['background'], compound="left")
         self.audiolabel.grid(row=0, column=0, columnspan=5)
 
         #self.seeker = ttk.Scale(self.audioframe, from_=0, to=100, orient=tk.HORIZONTAL)
@@ -153,7 +146,7 @@ class RecluseBoard:
         #self.channels = self.sound.get_num_channels()  # Number of audio channels (mono or stereo)
         #self.samplerate = self.sound.get_samplerate()  # Sample rate of the audio file
 
-        self.loadbtn = Button(self.audioframe, image=self.loadimage, text="Load", width=40, height=25, compound="left", command=self.loadaudio)
+        self.loadbtn = Button(self.audioframe, image=self.loadimage, text="Load", bg=config['btn-light']['bg'], fg=config['btn-light']['fg'], width=40, height=25, compound="left", command=self.loadaudio)
         self.loadbtn.grid(row=2, column=1, columnspan=5)
 
         self.prevbtn = Button(self.audioframe, image=self.previmage, text="Prev", width=25, height=25, command=self.playaudio)
@@ -167,8 +160,8 @@ class RecluseBoard:
         self.nextbtn = Button(self.audioframe, image=self.nextimage, text="Next", width=25, height=25, command=self.playaudio)
         self.nextbtn.grid(row=3, column=5, padx=5, pady=5)
 
-        self.playlistlabel = Label(self.audioframe, wraplength=500)
-        self.playlistlabel.grid(row=4,column=0, columnspan=5)
+        self.playlistlabel = Label(self.audioframe, bg=config['background'], wraplength=500)
+        self.playlistlabel.grid(row=4,column=0, columnspan=5,rowspan=30)
         self.isaudioplaying = False
 
     def loadaudio(self):
@@ -215,10 +208,10 @@ class RecluseBoard:
 
     def initclock(self):
         #TODO FIX calendar
-        self.clockframe = Frame(self.baseframe)
+        self.clockframe = Frame(self.baseframe, bg=config['background'])
         self.clockframe.pack()
 
-        self.calendarframe = Frame(self.clockframe)
+        self.calendarframe = Frame(self.clockframe,bg=config['background'])
         self.calendarframe.pack()
 
         self.calendarlabel = Label(self.calendarframe, text=calendar.month(int(self.returntime('%Y')),int(self.returntime('%m'))), font=("Arial",12))

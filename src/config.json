@@ -13,20 +13,9 @@
         "shortcut": "./csv/shortcut.csv",
         "week": "./csv/week.csv"
     },
-    "color":{
-        "background":"#ADD8E6",
-        "btn":{
-            "lt":{
-                "bg":"#4CAF50",
-                "fg":"#FFFFFF"
-            }
-        },
-        "1" : "#FFB6C1",
-        "2" : "#800080",
-        "3" : "#ADD8E6",
-        "4" : "#073763",
-        "dark" : "#000000",
-        "light" : "#FFFFFF",
-        "disable" : "#F0F0F0"
-    }
+    "btn-light": {"bg": "#8BC34A","fg": "#000000"},
+    "btn-dark": {"bg": "#673AB7","fg": "#FFFFFF"},
+    "btn-disable": {"bg": "#F0F0F0","fg": "#000000"},
+    "background":"#ADD8E6",
+    "forefround":"#000000"
 }

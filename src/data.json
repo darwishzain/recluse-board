@@ -1,0 +1,30 @@
+{
+    "shortcut":
+    {
+        "root":"/",
+        "home":"~"
+    },
+    "link":
+    {
+        "Google":"https://www.google.com",
+        "Youtube Studio":"https://studio.youtube.com",
+        "Github":"https://github.com",
+        "Sci-Hub":"https://sci-hub.se/",
+        "OneDrive":"https://onedrive.live.com/",
+        "neDrive":"https://onedrive.live.com/",
+        "eDrive":"https://onedrive.live.com/",
+        "Drive":"https://onedrive.live.com/",
+        "rive":"https://onedrive.live.com/",
+        "ive":"https://onedrive.live.com/",
+        "ve":"https://onedrive.live.com/",
+        "e":"https://onedrive.live.com/"
+    },
+    "command":
+    {
+        "tilix": "tilix"
+    },
+    "index":
+    {
+
+    }
+}
