@@ -21,10 +21,6 @@ print(decoded_networks) """
 ### todo Fix clashing  pomo+ audio
 ### todo Timetable with choice to show classes only [not important]
 
-color1 = "#4679c6"
-color2 = "#2f54aa"
-color3 = "#020a72"
-color4 = "#073763"
 colorb = "#000000"
 colorw = "#FFFFFF"
 colorws = "#F0F0F0"
@@ -46,7 +42,7 @@ def editor(dir):
 def command(command):
     os.system(str(command))
 
-config = openjson("./config.json")
+config = openjson(fullpath("./config.json"))
 class RecluseBoard:
     def __init__(self, root):
         self.root = root
