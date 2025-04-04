@@ -13,9 +13,13 @@
         "shortcut": "./csv/shortcut.csv",
         "week": "./csv/week.csv"
     },
+    "height":"400",
+    "width":"300",
     "btn-light": {"bg": "#8BC34A","fg": "#000000"},
     "btn-dark": {"bg": "#673AB7","fg": "#FFFFFF"},
     "btn-disable": {"bg": "#F0F0F0","fg": "#000000"},
     "background":"#ADD8E6",
-    "forefround":"#000000"
+    "foreground":"#000000",
+    "dark":"#8BC34A",
+    "light":"#673AB7"
 }
