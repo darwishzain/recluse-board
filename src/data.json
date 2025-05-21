@@ -1,9 +1,4 @@
 {
-    "shortcut":
-    {
-        "root":"/",
-        "home":"~"
-    },
     "link":
     {
         "Google":"https://www.google.com",
@@ -11,13 +6,10 @@
         "Github":"https://github.com",
         "Sci-Hub":"https://sci-hub.se/",
         "OneDrive":"https://onedrive.live.com/",
-        "neDrive":"https://onedrive.live.com/",
-        "eDrive":"https://onedrive.live.com/",
-        "Drive":"https://onedrive.live.com/",
-        "rive":"https://onedrive.live.com/",
-        "ive":"https://onedrive.live.com/",
-        "ve":"https://onedrive.live.com/",
-        "e":"https://onedrive.live.com/"
+        "Jeli":"https://jeli.com.my/",
+        "Daun":"https://daun.me/",
+        "Drive":"https://drive.google.com/",
+        "GMail":"https://mail.google.com/"
     },
     "command":
     {
@@ -26,5 +18,15 @@
     "index":
     {
 
+    },
+    "project":
+    {
+        "recluse-board":"~/Documents/Projects/recluse-board",
+        "umpsa-n":"~/Documents/Projects/umpsa-n"
+    },
+    "shortcut":
+    {
+        "root":"/",
+        "home":"~"
     }
 }
