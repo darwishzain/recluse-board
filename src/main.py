@@ -1,9 +1,9 @@
-import calendar,json,os,requests,socket,sys,time,webbrowser
+import calendar,json,os,requests,socket,speedtest,sys,time,webbrowser
 from datetime import timedelta
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 from pygame import mixer
-from PyQt6.QtCore import QTimer
-from PyQt6.QtGui import QFont
+from PyQt6.QtCore import QTimer, QSize
+from PyQt6.QtGui import QFont, QIcon
 from PyQt6.QtWidgets import QApplication, QFileDialog, QGridLayout, QHBoxLayout, QLabel, QListWidget, QMainWindow, QPushButton, QVBoxLayout, QWidget
 
 print(socket.gethostbyname(socket.gethostname()))
@@ -30,6 +30,7 @@ class RecluseWindow(QMainWindow):
         super().__init__()
         self.config = self.openjson(self.fullpath('config.json'))
         self.setWindowTitle(self.config['appname'])
+        self.setWindowIcon(QIcon(self.fullpath("graphic/icon.ico")))
         self.setGeometry(100, 100, int(self.config['height']), int(self.config['width']))  # x, y, height, width
         self.fontsmall = QFont(self.config['fontfamily'], int(self.config['fontsize']['small']))
         self.fontmedium = QFont(self.config['fontfamily'], int(self.config['fontsize']['medium']))
@@ -93,17 +94,25 @@ class RecluseWindow(QMainWindow):
         mediacontrol = QHBoxLayout()
         mediatitle.addLayout(mediacontrol)
 
-        loadbtn = QPushButton("Load")
+        loadbtn = QPushButton()
+        loadbtn.setIcon(QIcon(self.fullpath('graphic/load.png')))
         mediacontrol.addWidget(loadbtn)
 
-        prevbtn = QPushButton("Prev")
+        prevbtn = QPushButton()
+        prevbtn.setIcon(QIcon(self.fullpath('graphic/previous.png')))
         mediacontrol.addWidget(prevbtn)
 
-        self.playbtn = QPushButton("Play")
+        self.playbtn = QPushButton()
+        self.playbtn.setIcon(QIcon(self.fullpath('graphic/play.png'))) 
         mediacontrol.addWidget(self.playbtn)
 
-        nextbtn = QPushButton("Next")
+        nextbtn = QPushButton()
+        nextbtn.setIcon(QIcon(self.fullpath('graphic/next.png')))
         mediacontrol.addWidget(nextbtn)
+
+        repebtn = QPushButton()
+        repebtn.setIcon(QIcon(self.fullpath('graphic/next.png')))
+        mediacontrol.addWidget(repebtn)
 
         # Connect media buttons to methods
         loadbtn.clicked.connect(self.loadmedia)
@@ -115,24 +124,44 @@ class RecluseWindow(QMainWindow):
         mediatitle.addWidget(self.playlist)
 
     def loadmedia(self):
-        file = QFileDialog.getOpenFileName(self, 'Open File', '', 'Audio Files (*.mp3 *.wav *.ogg)')[0]
+        file = QFileDialog.getOpenFileName(self, 'Open File', '', 'Audio Files (*.mp3 *.wav *.ogg *.m4a *.flac *.aac *.opus *.aiff *.wma)')[0]
         if file:
             self.mediafile = file
-            self.mixer.music.load(self.mediafile)
-            self.medialabel.setText(os.path.basename(file))
+            self.playlist.addItem(file)
+            #self.medialabel.setText(os.path.basename(file))
 
     def mediaplaylist(self):
         print(self.mediaplaylist)
 
-    def prevmedia(self):
-        print("Previous media")
-
     def playmedia(self):
-        if self.mediafile:
-            mixer.music.play()
+        item = self.playlist.currentItem()
+        if item is None and self.playlist.count() > 0:
+            item = self.playlist.item(0)
+            self.playlist.setCurrentItem(item)
+        if item:
+            path = item.text()
+            self.medialabel.setText(os.path.basename(path))
+            self.mixer.music.load(path)
+            self.mixer.music.play()
+    
+    def prevmedia(self):
+        count = self.playlist.count()
+        if count == 0:
+            return
+        current_row = self.playlist.currentRow()
+        prev_row = (current_row - 1 + count) % count  # 🔁 loop back to last
+        self.playlist.setCurrentRow(prev_row)
+        self.playmedia()
 
     def nextmedia(self):
-        print("Next media")
+        count = self.playlist.count()
+        if count == 0:
+            return
+        current_row = self.playlist.currentRow()
+        next_row = (current_row + 1) % count  # 🔁 loop back to 0
+        self.playlist.setCurrentRow(next_row)
+        self.playmedia()
+
 
     def clock(self):
         timewidget = QWidget(self.container)
@@ -151,8 +180,6 @@ class RecluseWindow(QMainWindow):
         datestr = time.strftime('%d')+"/"+time.strftime('%m')+"/"+time.strftime('%Y')
         if self.pomotime > 0:
             self.pomotime = self.pomotime - 1
-        if self.mediafile:
-            self.medialabel.setText(self.mediafile)
         self.clock.setText(clockstr)
         self.date.setText(datestr)
         self.pomo.setText(str(timedelta(seconds=self.pomotime)))

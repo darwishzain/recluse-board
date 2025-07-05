@@ -5,3 +5,4 @@ pycparser==2.22
 cffi==1.17.1
 wifi==0.3.8
 pyinstaller
+speedtest-cli

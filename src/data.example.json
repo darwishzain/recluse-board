@@ -1,15 +1,12 @@
 {
     "link":
     {
-        "Google":"https://www.google.com",
         "Youtube Studio":"https://studio.youtube.com",
         "Github":"https://github.com",
         "Sci-Hub":"https://sci-hub.se/",
         "OneDrive":"https://onedrive.live.com/",
-        "Jeli":"https://jeli.com.my/",
-        "Daun":"https://daun.me/",
         "Drive":"https://drive.google.com/",
-        "GMail":"https://mail.google.com/"
+        "GMail":"https://mail.google.com/",
     },
     "command":
     {
@@ -17,12 +14,11 @@
     },
     "index":
     {
-        "device":"/home/cendol/Downloads/entertainment"
+
     },
     "project":
     {
-        "recluse-board":"~/Documents/Projects/recluse-board",
-        "umpsa-n":"~/Documents/Projects/umpsa-n"
+
     },
     "shortcut":
     {
