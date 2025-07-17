@@ -2,7 +2,7 @@ import calendar,json,os,requests,socket,speedtest,sys,time,webbrowser
 from datetime import timedelta
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 from pygame import mixer
-from PyQt6.QtCore import QTimer, QSize
+from PyQt6.QtCore import Qt, QTimer, QSize
 from PyQt6.QtGui import QFont, QIcon
 from PyQt6.QtWidgets import QApplication, QFileDialog, QGridLayout, QHBoxLayout, QLabel, QListWidget, QMainWindow, QPushButton, QVBoxLayout, QWidget
 
@@ -89,7 +89,8 @@ class RecluseWindow(QMainWindow):
         
         mediatitle = QVBoxLayout(mediawidget)
         self.medialabel = QLabel("Media Player")
-        mediatitle.addWidget(self.medialabel)
+        self.medialabel.setFixedWidth(200)
+        mediatitle.addWidget(self.medialabel, alignment=Qt.AlignmentFlag.AlignCenter)
 
         mediacontrol = QHBoxLayout()
         mediatitle.addLayout(mediacontrol)
@@ -110,8 +111,8 @@ class RecluseWindow(QMainWindow):
         nextbtn.setIcon(QIcon(self.fullpath('graphic/next.png')))
         mediacontrol.addWidget(nextbtn)
 
-        repebtn = QPushButton()
-        repebtn.setIcon(QIcon(self.fullpath('graphic/next.png')))
+        repebtn = QPushButton()#need to assign function soon
+        repebtn.setIcon(QIcon(self.fullpath('graphic/repeat.png')))
         mediacontrol.addWidget(repebtn)
 
         # Connect media buttons to methods
@@ -124,12 +125,11 @@ class RecluseWindow(QMainWindow):
         mediatitle.addWidget(self.playlist)
 
     def loadmedia(self):
-        file = QFileDialog.getOpenFileName(self, 'Open File', '', 'Audio Files (*.mp3 *.wav *.ogg *.m4a *.flac *.aac *.opus *.aiff *.wma)')[0]
+        file = QFileDialog.getOpenFileName(self, 'Open File', '', 'Audio Files (*.mp3 *.wav *.ogg)')[0]
         if file:
             self.mediafile = file
             self.playlist.addItem(file)
-            #self.medialabel.setText(os.path.basename(file))
-
+#*.m4a *.flac *.aac *.opus *.aiff *.wma
     def mediaplaylist(self):
         print(self.mediaplaylist)
 
@@ -141,6 +141,7 @@ class RecluseWindow(QMainWindow):
         if item:
             path = item.text()
             self.medialabel.setText(os.path.basename(path))
+            self.medialabel.setToolTip(os.path.basename(path))
             self.mixer.music.load(path)
             self.mixer.music.play()
     
