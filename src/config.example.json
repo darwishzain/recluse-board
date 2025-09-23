@@ -16,8 +16,8 @@
     "fontsize":
     {
         "small": 10,
-        "medium": 12,
-        "large": 14
+        "medium": 15,
+        "large": 20
     },
     "fontfamily": "Arial",
     "height":"400",
