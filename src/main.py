@@ -168,15 +168,25 @@ class RecluseWindow(QMainWindow):
                 self.mediaplaylist.setItemWidget(item, btn)
 
     def play(self,index):
+        if not self.playlist:
+            self.mediatitle.setText("Playlist is empty! Nothing to play.")
+            #print("Playlist is empty! Nothing to play.")
+            self.playindex = None
+            return
         if index is None:
-            if not self.playlist:
-                return
+            if self.playindex is None or self.playindex >= len(self.playlist):
+                index = 0
             else:
-                media = self.playlist[0]
-                self.playindex = 0
-        else:
-            media = self.playlist[index]
-            self.playindex = index
+                index = self.playindex
+
+        # Clamp index within playlist bounds
+        if index < 0 or index >= len(self.playlist):
+            self.mediatitle.setText("Invalid index! Cannot play.")
+            #print("Invalid index! Cannot play.")
+            return
+        media = self.playlist[index]
+        self.playindex = index
+
         print(media['path'])
         self.mediatitle.setText(media['title'])
         self.mediatitle.setToolTip(media['title'])
@@ -184,16 +194,24 @@ class RecluseWindow(QMainWindow):
         self.mixer.music.play()
 
     def prevmedia(self):
-        self.play(self.playindex-1)
+        if not self.playlist:
+            self.mediatitle.setText("Playlist is empty!")
+            return
+        self.playindex = (self.playindex - 1) % len(self.playlist)
+        self.play(self.playindex)
 
     def nextmedia(self):
-        self.play(self.playindex+1)
+        if not self.playlist:
+            self.mediatitle.setText("Playlist is empty!")
+            return
+        self.playindex = (self.playindex + 1) % len(self.playlist)
+        self.play(self.playindex)
 
     def pomodoro(self,time):
         self.pomotime = time
 
     def time(self):
-        self.pomotime = 30
+        self.pomotime = 0
         timewidget = QWidget()
         timelayout = QHBoxLayout(timewidget)
         self.layout.addWidget(timewidget)
@@ -217,7 +235,8 @@ class RecluseWindow(QMainWindow):
         self.pomotimer.setFont(self.fontlarge)
         pomocontrol = QHBoxLayout()
         pomolayout.addLayout(pomocontrol)
-        self.pomo0 = QPushButton("Refresh")
+        self.pomo0 = QPushButton()
+        self.pomo0.setIcon(QIcon(self.fullpath('graphic/refresh.png')))
         pomocontrol.addWidget(self.pomo0,stretch=0)
         self.pomo0.clicked.connect(lambda checked,time=0:self.pomodoro(time))
         self.pomo30 = QPushButton("+30")
@@ -230,8 +249,11 @@ class RecluseWindow(QMainWindow):
         pomocontrol.addWidget(self.pomoinput,stretch=0)
         self.pomoinput.setStyleSheet('background-color:#F0F0F0;color:#000000;')
         self.pomocustom = QPushButton("+")
+        self.pomocustom.clicked.connect(lambda checked:self.custompomo())
         pomocontrol.addWidget(self.pomocustom,stretch=0)
 
+    def custompomo(self):
+        self.pomodoro(int(self.pomoinput.text()))
 
     def update(self):
         clockstr = time.strftime('%H')+":"+time.strftime('%M')+":"+time.strftime('%S')
