@@ -1,5 +1,5 @@
 {
-    "link":
+    "links":
     {
         "Youtube Studio":"https://studio.youtube.com",
         "Github":"https://github.com",
@@ -8,7 +8,7 @@
         "Drive":"https://drive.google.com/",
         "GMail":"https://mail.google.com/"
     },
-    "command":
+    "commands":
     {
         "tilix": "tilix"
     },
@@ -16,7 +16,7 @@
     {
 
     },
-    "project":
+    "projects":
     {
 
     },
@@ -24,5 +24,13 @@
     {
         "root":"/",
         "home":"~"
+    },
+    "events":
+    {
+
+    },
+    "schedule":
+    {
+
     }
 }

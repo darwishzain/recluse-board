@@ -1,5 +1,6 @@
-import calendar,json,os,requests,socket,speedtest,sys,time,webbrowser
+import calendar,json,os,requests,socket,speedtest,subprocess,sys,time,webbrowser
 from datetime import timedelta
+from pathlib import Path
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 from pygame import mixer
 from PyQt6.QtCore import Qt, QTimer, QSize
@@ -78,13 +79,14 @@ class RecluseWindow(QMainWindow):
         buttonlayout = QGridLayout(buttonwidget)
         self.middle.addWidget(buttonwidget)
         self.data = self.openjson('data.json')
-        links = self.data.get('link', {})
-        commands = self.data.get('command', {})
+        links = self.data.get('links', {})
+        commands = self.data.get('commands', {})
+        projects = self.data.get('projects', {})
         if links:
             for text,url in links.items():
                 row = counter // 5
                 column = counter % 5
-                button =QPushButton(text,buttonwidget)
+                button = QPushButton(text,buttonwidget)
                 button.clicked.connect(lambda checked,url=url:self.openurl(url))
                 buttonlayout.addWidget(button,row,column)
                 counter += 1
@@ -92,17 +94,31 @@ class RecluseWindow(QMainWindow):
             for text,cmd in commands.items():
                 row = counter // 5
                 column = counter % 5
-                button =QPushButton(text,buttonwidget)
+                button = QPushButton(text,buttonwidget)
                 button.clicked.connect(lambda checked,cmd=cmd:self.runcommand(cmd))
                 buttonlayout.addWidget(button,row,column)
                 counter += 1
+        if projects:
+            for text,path in projects.items():
+                recluserc = path+"/.recluserc"
+                if Path(recluserc).exists():
+                    recluseconfig = self.openjson(recluserc)
+                    for label,command in recluseconfig.get('run', []).items():
+                        row = counter // 5
+                        column = counter % 5
+                        button = QPushButton(recluseconfig['title']+"\n("+label+")",buttonwidget)
+                        button.clicked.connect(lambda checked,cmd=command:self.startsubprocess(cmd))
+                        button.setStyleSheet("background-color: pink; color: black;")
+                        buttonlayout.addWidget(button,row,column)
+                        counter += 1
 
     def openurl(self, url):
         webbrowser.open(url)  # Open the URL in the browser
 
     def runcommand(self,cmd):
         os.system(str(cmd))
-
+    def startsubprocess(self,cmd):
+        subprocess.run(cmd, shell=True)
     def mediaplayer(self):
         self.mixer = mixer
         self.mixer.init()
