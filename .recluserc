@@ -1,0 +1,7 @@
+{
+    "title":"Recluse Board",
+    "name":"recluse-board",
+    "run":{
+        "code":"code /home/hidarishoya/Projects/recluse-board"
+    }
+}
