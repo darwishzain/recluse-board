@@ -108,7 +108,7 @@ class RecluseWindow(QMainWindow):
                         column = counter % 5
                         button = QPushButton(recluseconfig['title']+"\n("+label+")",buttonwidget)
                         button.clicked.connect(lambda checked,cmd=command:self.startsubprocess(cmd))
-                        button.setStyleSheet("background-color: pink; color: black;")
+                        button.setStyleSheet("background-color: black; color: green;")
                         buttonlayout.addWidget(button,row,column)
                         counter += 1
 
