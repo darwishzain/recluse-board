@@ -106,9 +106,9 @@ class RecluseWindow(QMainWindow):
                     for label,command in recluseconfig.get('run', []).items():
                         row = counter // 5
                         column = counter % 5
-                        button = QPushButton(recluseconfig['title']+"\n("+label+")",buttonwidget)
+                        button = QPushButton(recluseconfig['label']+"\n("+label+")",buttonwidget)
                         button.clicked.connect(lambda checked,cmd=command:self.startsubprocess(cmd))
-                        button.setStyleSheet("background-color: black; color: green;")
+                        button.setStyleSheet("background-color: black; color: white;")
                         buttonlayout.addWidget(button,row,column)
                         counter += 1
 
@@ -144,7 +144,7 @@ class RecluseWindow(QMainWindow):
         loadbtn = QPushButton()
         loadbtn.setIcon(QIcon(self.fullpath('graphic/load.png')))
         mediacontrol.addWidget(loadbtn)
-#
+
         prevbtn = QPushButton()
         prevbtn.setIcon(QIcon(self.fullpath('graphic/previous.png')))
         mediacontrol.addWidget(prevbtn)
@@ -202,8 +202,8 @@ class RecluseWindow(QMainWindow):
             return
         media = self.playlist[index]
         self.playindex = index
-
-        print(media['path'])
+        
+        self.playbtn.setIcon(QIcon(self.fullpath('graphic/pause.png')))
         self.mediatitle.setText(media['title'])
         self.mediatitle.setToolTip(media['title'])
         self.mixer.music.load(media['path'])
