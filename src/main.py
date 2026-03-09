@@ -81,7 +81,6 @@ class RecluseWindow(QMainWindow):
         self.data = self.openjson('data.json')
         links = self.data.get('links', {})
         commands = self.data.get('commands', {})
-        projects = self.data.get('projects', {})
         if links:
             for text,url in links.items():
                 row = counter // 5
@@ -98,20 +97,24 @@ class RecluseWindow(QMainWindow):
                 button.clicked.connect(lambda checked,cmd=cmd:self.runcommand(cmd))
                 buttonlayout.addWidget(button,row,column)
                 counter += 1
-        if projects:
-            for text,path in projects.items():
-                recluserc = path+"/.recluserc"
-                if Path(recluserc).exists():
-                    recluseconfig = self.openjson(recluserc)
-                    for label,command in recluseconfig.get('run', []).items():
-                        row = counter // 5
-                        column = counter % 5
-                        button = QPushButton(recluseconfig['label']+"\n("+label+")",buttonwidget)
-                        button.clicked.connect(lambda checked,cmd=command:self.startsubprocess(cmd))
-                        button.setStyleSheet("background-color: black; color: white;")
-                        buttonlayout.addWidget(button,row,column)
-                        counter += 1
-
+        projects = [
+            sub_dir
+            for base_path in self.data['projects']
+            for sub_dir in Path(base_path).iterdir() 
+            if sub_dir.is_dir()
+        ]
+        for project in projects:
+            # Now check for your .recluserc file
+            if (project / ".recluserc").is_file():
+                recluseconfig = self.openjson(project/".recluserc")
+                for label,command in recluseconfig.get('run', []).items():
+                    row = counter // 5
+                    column = counter % 5
+                    button = QPushButton(recluseconfig['label']+"\n("+label+")",buttonwidget)
+                    button.clicked.connect(lambda checked,cmd=command:self.startsubprocess(cmd))
+                    button.setStyleSheet("background-color: black; color: white;")
+                    buttonlayout.addWidget(button,row,column)
+                    counter += 1
     def openurl(self, url):
         webbrowser.open(url)  # Open the URL in the browser
 
