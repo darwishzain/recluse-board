@@ -3,7 +3,7 @@
     "label":"RB",
     "name":"recluse-board",
     "run":{
-        "code":"code /home/hidarishoya/Projects/recluse-board",
-        "python":"/home/hidarishoya/Projects/recluse-board/src/venvs/bin/python /home/hidarishoya/Projects/recluse-board/src/main.py"
+        "</>":"code /home/hidarishoya/Projects/recluse-board",
+        ".py":"/home/hidarishoya/Projects/recluse-board/src/venvs/bin/python /home/hidarishoya/Projects/recluse-board/src/main.py"
     }
 }

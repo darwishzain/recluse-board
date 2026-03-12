@@ -110,7 +110,7 @@ class RecluseWindow(QMainWindow):
                 for label,command in recluseconfig.get('run', []).items():
                     row = counter // 5
                     column = counter % 5
-                    button = QPushButton(recluseconfig['label']+"\n("+label+")",buttonwidget)
+                    button = QPushButton(recluseconfig['label']+"("+label+")",buttonwidget)
                     button.clicked.connect(lambda checked,cmd=command:self.startsubprocess(cmd))
                     button.setStyleSheet("background-color: black; color: white;")
                     buttonlayout.addWidget(button,row,column)
