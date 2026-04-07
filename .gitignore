@@ -1,2 +1,3 @@
 ./src/csv
 ./recluse-env
+./graphic/*.svg
