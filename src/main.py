@@ -81,6 +81,10 @@ class RecluseWindow(QMainWindow):
         self.data = self.openjson('data.json')
         links = self.data.get('links', {})
         commands = self.data.get('commands', {})
+        button = QPushButton("Button Settings",buttonwidget)
+        button.clicked.connect(lambda checked,cmd="xdg-open data.json":self.runcommand(cmd))
+        buttonlayout.addWidget(button,counter//5,counter%5)
+        counter += 1
         if links:
             for text,url in links.items():
                 row = counter // 5
