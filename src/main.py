@@ -3,9 +3,9 @@ from datetime import timedelta
 from pathlib import Path
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 from pygame import mixer
-from PyQt6.QtCore import Qt, QTimer, QSize
-from PyQt6.QtGui import QFont, QIcon
-from PyQt6.QtWidgets import QApplication, QFileDialog, QGridLayout, QHBoxLayout, QLabel, QLineEdit,QListWidget,QListWidgetItem, QMainWindow, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
+from PySide6.QtCore import Qt, QTimer, QSize
+from PySide6.QtGui import QFont, QIcon
+from PySide6.QtWidgets import QApplication, QFileDialog, QGridLayout, QHBoxLayout, QLabel, QLineEdit,QListWidget,QListWidgetItem, QMainWindow, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 
 #print(socket.gethostbyname(socket.gethostname()))
 
@@ -81,8 +81,9 @@ class RecluseWindow(QMainWindow):
         self.data = self.openjson('data.json')
         links = self.data.get('links', {})
         commands = self.data.get('commands', {})
-        button = QPushButton("Button Settings",buttonwidget)
+        button = QPushButton("",buttonwidget)
         button.clicked.connect(lambda checked,cmd="xdg-open data.json":self.runcommand(cmd))
+        button.setIcon(QIcon(self.fullpath('graphic/gear.png')))
         buttonlayout.addWidget(button,counter//5,counter%5)
         counter += 1
         if links:
