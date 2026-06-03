@@ -1,5 +1,5 @@
 import calendar,json,os,requests,socket,speedtest,subprocess,sys,time,webbrowser
-from datetime import timedelta
+from datetime import timedelta,datetime
 from pathlib import Path
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 from pygame import mixer
@@ -8,7 +8,10 @@ from PySide6.QtGui import QFont, QIcon
 from PySide6.QtWidgets import QApplication, QFileDialog, QGridLayout, QHBoxLayout, QLabel, QLineEdit,QListWidget,QListWidgetItem, QMainWindow, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 
 #print(socket.gethostbyname(socket.gethostname()))
-
+def restartapplication():
+    print(f"Restarting application...{datetime.now()}")
+    python = sys.executable
+    os.execl(python, python, * sys.argv)
 
 def command(command):
     os.system(str(command))
@@ -81,6 +84,11 @@ class RecluseWindow(QMainWindow):
         self.data = self.openjson('data.json')
         links = self.data.get('links', {})
         commands = self.data.get('commands', {})
+        button = QPushButton("",buttonwidget)
+        button.clicked.connect(lambda checked,:restartapplication())
+        button.setIcon(QIcon(self.fullpath('graphic/repeat.png')))
+        buttonlayout.addWidget(button,counter//5,counter%5)
+        counter += 1
         button = QPushButton("",buttonwidget)
         button.clicked.connect(lambda checked,cmd="xdg-open data.json":self.runcommand(cmd))
         button.setIcon(QIcon(self.fullpath('graphic/gear.png')))
